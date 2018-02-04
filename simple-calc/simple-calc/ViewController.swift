@@ -40,6 +40,7 @@ class ViewController: UIViewController {
     let calc = Calculator()
     
     var input: [Int] = []
+    var history: [[Int]] = []
 
     @IBOutlet weak var calcDisplay: UILabel!
     
@@ -256,7 +257,21 @@ class ViewController: UIViewController {
         } else {
             calcDisplay.text = "0"
         }
+        input.append(-99)
+        input.append(Int(calcDisplay.text!)!)
+        history.append(input)
         input = []
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "SVCSegue"?:
+            let source = segue.source as! ViewController
+            let destination = segue.destination as! HistoryView
+            destination.history = source.history
+        default:
+            NSLog("Unknown segue identifier -- " + segue.identifier!)
+        }
     }
     
 }
